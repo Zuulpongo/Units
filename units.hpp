@@ -18,6 +18,7 @@ public:
     Unit(T i) : val(i) {};
 
     inline const T& get() { return val; }
+    inline void set(T v) { val = v; }
 
     template <typename U>
     explicit operator Unit<U>() const noexcept(noexcept(std::is_nothrow_convertible_v<T, U>)) { return Unit<U>(static_cast<U>(val)); }
