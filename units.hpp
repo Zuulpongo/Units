@@ -17,11 +17,16 @@ public:
     Unit() : val{} {};
     Unit(T i) : val(i) {};
 
-    inline const T& get() { return val; }
-    inline void set(T v) { val = v; }
+    inline const T& base() { return val; }
+    inline void base(T v) { val = v; }
 
     template <typename U>
     explicit operator Unit<U>() const noexcept(noexcept(std::is_nothrow_convertible_v<T, U>)) { return Unit<U>(static_cast<U>(val)); }
+
+    inline Unit<T>& operator=(const Unit<T>& rhs) { val = rhs.val; return *this; }
+    inline Unit<T>& operator=(T rhs) { val = rhs; return *this; }
+    
+    //template <typename A, typename B> friend Unit<A>& operator=(const Unit<A>& lhs, const Unit<B>& rhs) noexcept(noexcept(A{} = B{}));
 
     inline bool operator==(const Unit<T>& rhs) const noexcept requires std::equality_comparable<T> { return val == rhs.val; }
     inline bool operator!=(const Unit<T>& rhs) const noexcept requires std::equality_comparable<T> { return val != rhs.val; }
